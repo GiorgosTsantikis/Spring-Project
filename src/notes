@@ -1,0 +1,75 @@
+Here it is we are making something useful finally
+
+This is all I need to review my progress in this course basically
+
+We will create a full mvc-crud project meaning it will serve html pages and access data from a database
+
+Some important notes are
+
+1.we are using the @Repository annotation on EmployeeRepository so all the crud functionality is
+given by spring automatically
+
+2.We are using a service layer so controller->service->repository(Dao)
+
+3.Our employee class @Entity has been properly formatted to be accepted by spring data jpa
+
+Now things that werent clear but now are
+
+I have my controller I handle requests and serve thymeleaf pages just by returning their name
+and using the @Get/PostMapping. We use the model to pass data from the database to my html pages
+
+-------------------------------------------------
+First thing we do is a /list get mapping to show all the employees. I get a list from employeeService that contains all employees
+I use model.addAttribute("list",theList) theList is the list with the emps
+"list" is the name with which i can access that list with thymeleaf inside the html page
+--------------------------------------------------------------
+Now we use bootstrap and html arrays to make the page not ugly
+1.We link to bootstrap in the <head> of the html
+then we create a html table with bootstrap styles
+--------------------------------------------------------------------
+add index.html as a get / or get  localhost:8080
+--------------------------------------------------------------------
+
+ADD EMPLOYEE
+We create a button in the list page to add a new employee
+this is a link to /addEmployee which then by our controller we get directed to a new
+page called add-employee.html. Our controller also adds an empty employee object to the model
+
+In our html form
+th:action location to send data
+th:object reference to model attribute
+th:field bind input field to a property on model attribute
+
+we post to /save and do public String saveEmployee(@ModelAttribute("employee")Employee employee){
+employeeService.save(employee);
+return "redirect:/employee/list";
+}
+in order to redirect we have to use redirect: and our employee is saved
+
+Next we will sort by last name
+.Add custom method to jpa repository
+
+READ HOW QUERYS WORK ON SPRING DATA JPA ITS MAGIC
+Just adding a method signature and i have the functionality all that matters is the method name
+here we add a method
+public List<Employee> findAllByOrderByLastNameAsc();
+===========================================================
+Next up
+
+UPDATE EMPLOYEE
+
+Add a button in the list to update an employee
+serve form with preloaded data
+1.Update but
+==I create new column with the buttons
+these buttons re-direct to the add-employee but they also pass the id through the link like htis
+          <a th:href="@{/employees/addEmployee(employeeId=${tempEmployee.id})"
+Controller:
+    public String updateEmployee(@RequestParam("employeeId") int id,Model model){
+
+2.Pre-populate
+3.Add to db
+
+==========================================
+
+Now we delete asking before deleting
